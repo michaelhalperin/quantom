@@ -1,0 +1,17 @@
+{
+  "name": "polymarket-dashboard-server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Paper-trading backend for the Polymarket bot dashboard. Reads live public Polymarket data, runs strategies, and serves the dashboard's snapshot contract.",
+  "scripts": {
+    "dev": "node --import tsx --experimental-sqlite --watch src/index.ts",
+    "start": "node --import tsx --experimental-sqlite src/index.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}

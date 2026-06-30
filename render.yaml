@@ -1,0 +1,43 @@
+# Render blueprint — deploys the always-on paper-trading backend (with a
+# persistent disk for its SQLite history) and the dashboard as a static site.
+#
+# Prereqgs: push this repo to GitHub, then in Render: New > Blueprint > pick the
+# repo. See server/DEPLOY.md for the full walkthrough (and the manual,
+# no-YAML path if you prefer clicking through the UI).
+
+services:
+  # --- the bot (must run 24/7 so it keeps trading & learning) ---------------
+  - type: web
+    name: polymarket-paper-bot
+    runtime: docker
+    dockerfilePath: ./server/Dockerfile
+    dockerContext: ./server
+    plan: starter # ~$7/mo — always-on. (The free plan sleeps when idle.)
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: AUTO_START
+        value: "true"
+      - key: CORS_ORIGIN
+        value: "*" # tighten to your dashboard URL once it's deployed
+    disk:
+      name: polybot-data
+      mountPath: /app/data
+      sizeGB: 1
+
+  # --- the dashboard (static files; open it from anywhere) ------------------
+  - type: web
+    name: polymarket-dashboard
+    runtime: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    autoDeploy: true
+    envVars:
+      # After the backend deploys, set this to https://<backend>.onrender.com/api
+      # (Render Dashboard > this service > Environment), then redeploy.
+      - key: VITE_BOT_API
+        value: "https://polymarket-paper-bot.onrender.com/api"
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

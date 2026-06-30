@@ -1,0 +1,227 @@
+@import 'tailwindcss';
+
+/* Class-based dark mode (we toggle `.dark` on <html>) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---------------------------------------------------------------------------
+   Design tokens — semantic colors that switch with the .dark class.
+   Components reference these via Tailwind utilities (bg-surface, text-muted…).
+--------------------------------------------------------------------------- */
+:root {
+  --background: #f5f6f8;
+  --surface: #ffffff;
+  --surface-2: #f3f4f7;
+  --surface-3: #eaecf0;
+  --border: #e6e8ec;
+  --border-strong: #d3d7de;
+  --foreground: #0c0e14;
+  --muted: #59616f;
+  --muted-2: #88909d;
+  --primary: #2f6bff;
+  --primary-foreground: #ffffff;
+  --primary-soft: rgba(47, 107, 255, 0.1);
+  --profit: #07a35a;
+  --loss: #d42f3a;
+  --yes: #07a35a;
+  --no: #d42f3a;
+  --warning: #c07700;
+  --accent: #7c5cff;
+  --ring: rgba(47, 107, 255, 0.45);
+  --grid: rgba(12, 14, 20, 0.06);
+  --shadow-color: 220 40% 30%;
+}
+
+.dark {
+  --background: #08090c;
+  --surface: #0f1117;
+  --surface-2: #161922;
+  --surface-3: #1c202b;
+  --border: #20242f;
+  --border-strong: #2c3242;
+  --foreground: #e8eaf0;
+  --muted: #8b93a3;
+  --muted-2: #5b6271;
+  --primary: #4d7cff;
+  --primary-foreground: #ffffff;
+  --primary-soft: rgba(77, 124, 255, 0.14);
+  --profit: #16c784;
+  --loss: #ea3943;
+  --yes: #16c784;
+  --no: #ea3943;
+  --warning: #f5a623;
+  --accent: #9b7dff;
+  --ring: rgba(77, 124, 255, 0.5);
+  --grid: rgba(255, 255, 255, 0.05);
+  --shadow-color: 220 60% 2%;
+}
+
+@theme inline {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-2: var(--muted-2);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-soft: var(--primary-soft);
+  --color-profit: var(--profit);
+  --color-loss: var(--loss);
+  --color-yes: var(--yes);
+  --color-no: var(--no);
+  --color-warning: var(--warning);
+  --color-accent: var(--accent);
+  --color-ring: var(--ring);
+
+  --radius-xl: 1rem;
+  --radius-2xl: 1.25rem;
+
+  --animate-fade-in: fade-in 0.4s ease both;
+  --animate-fade-up: fade-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-scale-in: scale-in 0.2s ease both;
+  --animate-shimmer: shimmer 1.8s linear infinite;
+  --animate-pulse-dot: pulse-dot 1.8s ease-in-out infinite;
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-flash-up: flash-up 0.6s ease both;
+  --animate-flash-down: flash-down 0.6s ease both;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes shimmer {
+  from { background-position: -200% 0; }
+  to { background-position: 200% 0; }
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.8); }
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes flash-up {
+  0% { background-color: color-mix(in srgb, var(--profit) 22%, transparent); }
+  100% { background-color: transparent; }
+}
+@keyframes flash-down {
+  0% { background-color: color-mix(in srgb, var(--loss) 22%, transparent); }
+  100% { background-color: transparent; }
+}
+
+/* ---------------------------------------------------------------------------
+   Base layer
+--------------------------------------------------------------------------- */
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scrollbar-gutter: stable;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    font-feature-settings: 'cv11', 'ss01';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--primary) 30%, transparent);
+  }
+
+  /* Numbers should be tabular for clean alignment in tables / tickers */
+  .nums {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum';
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Scrollbars
+--------------------------------------------------------------------------- */
+@layer base {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-strong) transparent;
+  }
+  *::-webkit-scrollbar {
+    width: 9px;
+    height: 9px;
+  }
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  *::-webkit-scrollbar-thumb {
+    background-color: var(--border-strong);
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    background-color: var(--muted-2);
+    background-clip: padding-box;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Helpers
+--------------------------------------------------------------------------- */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Subtle glass surface used by the top bar / overlays */
+@utility glass {
+  background: color-mix(in srgb, var(--surface) 72%, transparent);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+}
+
+/* Faint grid / aurora backdrop for the app shell */
+.app-aurora::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(60rem 40rem at 12% -10%, color-mix(in srgb, var(--primary) 12%, transparent), transparent 60%),
+    radial-gradient(50rem 40rem at 100% 0%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 55%);
+  opacity: 0.7;
+}
+
+/* Recharts: make the focus/active outlines disappear */
+.recharts-surface:focus,
+.recharts-wrapper:focus {
+  outline: none;
+}
+.recharts-default-tooltip {
+  display: none !important;
+}

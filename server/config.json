@@ -1,0 +1,33 @@
+{
+  "bot": {
+    "initialCapital": 500,
+    "mode": "paper",
+    "cycleSeconds": 25,
+    "refreshSeconds": 6,
+    "autoStart": true
+  },
+  "risk": {
+    "maxFractionPerTrade": 0.05,
+    "maxGrossExposure": 0.7,
+    "maxFractionPerCategory": 0.35,
+    "kellyFraction": 0.25,
+    "dailyLossLimitPct": 5,
+    "autoKillSwitch": true,
+    "takeProfit": 0.25,
+    "stopLoss": 0.2,
+    "feeBps": 0
+  },
+  "strategy": {
+    "enableArbitrage": true,
+    "arbMinProfit": 0.01,
+    "enableValue": true,
+    "valueMinEdge": 0.06,
+    "valueLookback": 20,
+    "enableMarketMaking": false
+  },
+  "universe": {
+    "minLiquidity": 20000,
+    "minVolume24h": 5000,
+    "maxMarkets": 60
+  }
+}
