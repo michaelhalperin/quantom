@@ -1,8 +1,9 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { ArrowLeft, CalendarClock, Droplets, Zap } from 'lucide-react'
 import { useBotStore } from '@/store/useBotStore'
-import { generateOrderBook } from '@/data/mock'
+import { api } from '@/data/api'
+import type { OrderBook } from '@/types'
 import { SectionCard, StatTile } from '@/components/dashboard/widgets'
 import { PriceChart, DepthChart } from '@/components/charts'
 import { OrderBookPanel } from '@/components/markets/OrderBookPanel'
@@ -30,12 +31,23 @@ export function MarketDetailPage() {
   const positions = useBotStore((s) => s.positions)
   const [tf, setTf] = useState<Tf>('1M')
 
-  const book = useMemo(
-    () => (market ? generateOrderBook(market) : null),
-    // re-derive as the mid drifts (every ~2¢)
+  const [book, setBook] = useState<OrderBook | null>(null)
+
+  useEffect(() => {
+    if (!market) {
+      setBook(null)
+      return
+    }
+    let cancelled = false
+    void api.getOrderBook(market).then((b) => {
+      if (!cancelled) setBook(b)
+    })
+    return () => {
+      cancelled = true
+    }
+    // re-fetch as the mid drifts (every ~2¢)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [market?.id, market ? Math.round(market.yesPrice * 50) : 0],
-  )
+  }, [market?.id, market ? Math.round(market.yesPrice * 50) : 0])
 
   if (!market) {
     return (

@@ -18,6 +18,15 @@ export function randomId(prefix = 'id') {
   return `${prefix}_${Math.random().toString(36).slice(2, 10)}`
 }
 
+/** Stable 32-bit hash for any string (used to seed mock generators). */
+export function hashString(s: string): number {
+  let h = 0
+  for (let i = 0; i < s.length; i++) {
+    h = (Math.imul(31, h) + s.charCodeAt(i)) | 0
+  }
+  return h >>> 0
+}
+
 /** Deterministic PRNG (mulberry32) so seeded mock data is stable across reloads. */
 export function mulberry32(seed: number) {
   let a = seed

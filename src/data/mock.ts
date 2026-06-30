@@ -1,5 +1,6 @@
 import {
   mulberry32,
+  hashString,
   clamp,
   gaussian,
   randFloat,
@@ -551,7 +552,7 @@ function buildActivity(
 // Order book generator — derived deterministically from a market.
 // ---------------------------------------------------------------------------
 export function generateOrderBook(market: Market, seed?: number): OrderBook {
-  const rng = mulberry32(seed ?? market.id.split('_')[1].charCodeAt(0) * 131 + Math.floor(market.yesPrice * 1000))
+  const rng = mulberry32(seed ?? hashString(market.id) + Math.floor(market.yesPrice * 1000))
   const mid = market.yesPrice
   const levels = 12
   const tick = 0.005

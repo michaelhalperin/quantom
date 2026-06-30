@@ -164,7 +164,7 @@ export function Sidebar() {
         type="button"
         onClick={toggle}
         aria-label="Toggle sidebar"
-        className="absolute -right-3 top-20 grid h-6 w-6 place-items-center rounded-full border border-border bg-surface text-muted-2 shadow-md transition-colors hover:text-foreground"
+        className="absolute -right-3 bottom-6 grid h-6 w-6 place-items-center rounded-full border border-border bg-surface text-muted-2 shadow-md transition-colors hover:text-foreground"
       >
         {collapsed ? <PanelLeftOpen size={13} /> : <PanelLeftClose size={13} />}
       </button>
