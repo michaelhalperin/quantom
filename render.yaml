@@ -33,10 +33,10 @@ services:
     staticPublishPath: ./dist
     autoDeploy: true
     envVars:
-      # After the backend deploys, set this to https://<backend>.onrender.com/api
-      # (Render Dashboard > this service > Environment), then redeploy.
+      # Points at the deployed backend's API. If the backend service is renamed
+      # or recreated (new URL suffix), update this and redeploy the dashboard.
       - key: VITE_BOT_API
-        value: "https://polymarket-paper-bot.onrender.com/api"
+        value: "https://polymarket-paper-bot-i6z5.onrender.com/api"
     routes:
       - type: rewrite
         source: /*
